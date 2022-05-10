@@ -3,16 +3,21 @@
 
 ;; Add a simple prefix dispatcher to the *dispatch-table*
 (setq *dispatch-table*
-      (list (create-prefix-dispatcher "/hello" 'hello)))
+			(list (create-prefix-dispatcher "/hello" 'hello)
+						(create-prefix-dispatcher "/bye" 'bye)))
 
 ;; Handler functions either return generated Web pages as strings,
 ;; or write to the output stream returned by write-headers
 (defun hello()
   "Hello !")
 
+(defun bye()
+  "Bye !")
+
 (defun main ()
   (start (make-instance 'easy-acceptor :port 8080))
   (sb-thread:join-thread (find-if
                           (lambda (th)
-                            (string= (sb-thread:thread-name th) "hunchentoot-listener-*:8080"))
+                            (string= (sb-thread:thread-name th)
+																		 "hunchentoot-listener-*:8080"))
                           (sb-thread:list-all-threads))))
