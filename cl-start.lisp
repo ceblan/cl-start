@@ -7,6 +7,7 @@
 	  (list (create-prefix-dispatcher "/hello" 'hello)
 			(create-prefix-dispatcher "/bye" 'bye)))
 
+;;
 ;; Handler functions either return generated Web pages as strings,
 ;; or write to the output stream returned by write-headers
 (defun hello()
