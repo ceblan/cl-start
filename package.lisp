@@ -1,6 +1,8 @@
 ;;;; package.lisp
-(ql:quickload '(:hunchentoot))
+(ql:quickload '(:hunchentoot :cl-who))
 
 (defpackage #:cl-start
-  (:use #:cl #:hunchentoot)
+  (:use #:cl
+		#:hunchentoot
+		#:cl-who)
     (:export :main))
