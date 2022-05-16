@@ -41,10 +41,19 @@
                          "Vote on your favourite Retro Game"))
             ,@body))))
 
-(standard-page
-	(:title "hola que ase")
-	 (:script nil)
-  (:h1 "tralari"))
+(defmacro standard-rest (&body body)
+  "All pages on the Retro Games site will use the following macro;
+   less to type and a uniform look of the pages (defines the header
+   and the stylesheet).
+   The macro also accepts an optional script argument. When present, the
+   script form is expected to expand into valid JavaScript."
+  `(with-output-to-string (*standard-output* nil)
+    (format stream "~s" ,@body)))
+
+;; (standard-page
+;; 	(:title "hola que ase")
+;; 	 (:script nil)
+;;   (:h1 "tralari"))
 
 (setf (html-mode) :html5) ; output in html5
 
@@ -70,25 +79,26 @@
   (push (create-static-file-dispatcher-and-handler
          "/retro.css" "static/retro.css") *dispatch-table*))
 
-(setq *dispatch-table*
-	  (list (create-prefix-dispatcher "/hello2" 'hello2)
-	  		;; add more dispatchers below this line
-			(create-prefix-dispatcher "/test" 'test-page)
-			(create-prefix-dispatcher "/page" 'page-one)
-			(create-prefix-dispatcher "/bye" 'bye)))
+;; (setq *dispatch-table*
+;; 	  (list (create-prefix-dispatcher "/hello2" 'hello2)
+;; 	  		;; add more dispatchers below this line
+;; 			(create-prefix-dispatcher "/test" 'test-page)
+;; 			(create-prefix-dispatcher "/page" 'page-one)
+;; 			(create-prefix-dispatcher "/bye" 'bye)))
 
 
 (define-easy-handler (hello :uri "/hello") ()
   (standard-page (:title "hola que ase")
-	(:h1 "tralari")
-	(:p "hello")))
+	(:h1 "tralari")))
 
+(define-easy-handler (bye :uri "/bye") ()
+  (standard-rest "bye!"))
 
-(hunchentoot:define-easy-handler (say-yo :uri "/yo") (name)
-  (setf (hunchentoot:content-type*) "text/plain")
-  (format nil "Hey~@[ ~A~]!" name))
+;; (hunchentoot:define-easy-handler (say-yo :uri "/yo") (name)
+;;   (setf (hunchentoot:content-type*) "text/plain")
+;;   (format nil "Hey~@[ ~A~]!" name))
 
-(hunchentoot:start (make-instance 'hunchentoot:easy-acceptor :port 4242))
+;; (hunchentoot:start (make-instance 'hunchentoot:easy-acceptor :port 4242))
 
 (defun hello()
   "Hello !")
@@ -99,6 +109,7 @@
 (defun bye()
   "Bye !")
 
+(publish-static-content)
 
 (defun stop-server ()
   "Terminates the thread that executes the listener"
@@ -116,9 +127,5 @@
 							(string= (sb-thread:thread-name th)
 									 "hunchentoot-listener-*:8080"))
 						  (sb-thread:list-all-threads))))
-
-
-
-(publish-static-content)
 
 ;;(main)
