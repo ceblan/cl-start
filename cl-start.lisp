@@ -2,13 +2,26 @@
 ;;(ql:quickload :cl-start)
 (in-package #:cl-start)
 
-;; Add a simple prefix dispatcher to the *dispatch-table*
 ;; (setq *dispatch-table*
-;; 	  (list (create-prefix-dispatcher "/hello" 'hello)
+;; 	  (list (create-prefix-dispatcher "/hello2" 'hello2)
 ;; 	  		;; add more dispatchers below this line
 ;; 			(create-prefix-dispatcher "/test" 'test-page)
 ;; 			(create-prefix-dispatcher "/page" 'page-one)
 ;; 			(create-prefix-dispatcher "/bye" 'bye)))
+
+;; (defun hello()
+;;   "Hello !")
+
+;; (defun hello2()
+;;   "Hello 2!")
+
+;; (defun bye()
+;;   "Bye !")
+
+;; (hunchentoot:define-easy-handler (say-yo :uri "/yo") (name)
+;;   (setf (hunchentoot:content-type*) "text/plain")
+;;   (format nil "Hey~@[ ~A~]!" name))
+
 
 ;;
 ;; Handler functions either return generated Web pages as strings,
@@ -42,18 +55,9 @@
             ,@body))))
 
 (defmacro standard-rest (&body body)
-  "All pages on the Retro Games site will use the following macro;
-   less to type and a uniform look of the pages (defines the header
-   and the stylesheet).
-   The macro also accepts an optional script argument. When present, the
-   script form is expected to expand into valid JavaScript."
+  "All services on the reat api will use the following macro;"
   `(with-output-to-string (*standard-output* nil)
     (format stream "~s" ,@body)))
-
-;; (standard-page
-;; 	(:title "hola que ase")
-;; 	 (:script nil)
-;;   (:h1 "tralari"))
 
 (setf (html-mode) :html5) ; output in html5
 
@@ -79,12 +83,6 @@
   (push (create-static-file-dispatcher-and-handler
          "/retro.css" "static/retro.css") *dispatch-table*))
 
-;; (setq *dispatch-table*
-;; 	  (list (create-prefix-dispatcher "/hello2" 'hello2)
-;; 	  		;; add more dispatchers below this line
-;; 			(create-prefix-dispatcher "/test" 'test-page)
-;; 			(create-prefix-dispatcher "/page" 'page-one)
-;; 			(create-prefix-dispatcher "/bye" 'bye)))
 
 
 (define-easy-handler (hello :uri "/hello") ()
@@ -93,21 +91,6 @@
 
 (define-easy-handler (bye :uri "/bye") ()
   (standard-rest "bye!"))
-
-;; (hunchentoot:define-easy-handler (say-yo :uri "/yo") (name)
-;;   (setf (hunchentoot:content-type*) "text/plain")
-;;   (format nil "Hey~@[ ~A~]!" name))
-
-;; (hunchentoot:start (make-instance 'hunchentoot:easy-acceptor :port 4242))
-
-(defun hello()
-  "Hello !")
-
-(defun hello2()
-  "Hello 2!")
-
-(defun bye()
-  "Bye !")
 
 (publish-static-content)
 
