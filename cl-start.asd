@@ -8,6 +8,7 @@
   :serial t
   :depends-on (#:hunchentoot
 			   #:cl-who
-			   #:drakma)
+			   #:drakma
+			   #:flexi-streams)
   :components ((:file "package")
                (:file "cl-start")))

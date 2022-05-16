@@ -84,13 +84,15 @@
          "/retro.css" "static/retro.css") *dispatch-table*))
 
 
+;; (flexi-streams:octets-to-string (first (list (drakma:http-request "https://servicios.ine.es/wstempus/js/ES/VARIABLES?page=1"))) :external-format :utf-8)
+
 
 (define-easy-handler (hello :uri "/hello") ()
   (standard-page (:title "hola que ase")
 	(:h1 "tralari")))
 
 (define-easy-handler (bye :uri "/bye") ()
-  (standard-rest "bye!"))
+  (standard-rest (flexi-streams:octets-to-string (first (list (drakma:http-request "https://servicios.ine.es/wstempus/js/ES/VARIABLES?page=1"))) :external-format :utf-8)))
 
 (publish-static-content)
 
