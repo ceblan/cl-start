@@ -56,8 +56,7 @@
 
 (defmacro standard-rest (&body body)
   "All services on the reat api will use the following macro;"
-  `(with-output-to-string (*standard-output* nil)
-    (format stream "~s" ,@body)))
+  `(format nil "~s" ,@body))
 
 (setf (html-mode) :html5) ; output in html5
 
@@ -92,7 +91,8 @@
 	(:h1 "tralari")))
 
 (define-easy-handler (bye :uri "/bye") ()
-  (standard-rest (flexi-streams:octets-to-string (first (list (drakma:http-request "https://servicios.ine.es/wstempus/js/ES/VARIABLES?page=1"))) :external-format :utf-8)))
+   (flexi-streams:octets-to-string (first (list (drakma:http-request "https://servicios.ine.es/wstempus/js/ES/VARIABLES?page=1"))) :external-format :utf-8))
+
 
 (publish-static-content)
 
