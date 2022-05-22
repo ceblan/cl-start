@@ -93,6 +93,9 @@
 (define-easy-handler (bye :uri "/bye") ()
    (flexi-streams:octets-to-string (first (list (drakma:http-request "https://servicios.ine.es/wstempus/js/ES/VARIABLES?page=1"))) :external-format :utf-8))
 
+(define-easy-handler (bye :uri "/test") ()
+   (test-page))
+
 
 (publish-static-content)
 
